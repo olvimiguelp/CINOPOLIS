@@ -1,0 +1,121 @@
+<!--
+ * Encabezado para la página de películas, con un efecto
+ * translúcido que se oculta cuando la página está contraída
+ -->
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!-- Título de la página -->
+    <ion-title>Películas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!--
+   * Toolbar colapsable para la página de películas, con un
+   * título grande que se muestra solo cuando la página está expandida
+   -->
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Películas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Select para filtrar por genero -->
+  <ion-list>
+    <ion-item>
+      <ion-select aria-label="Categoría de películas" interface="popover" placeholder="Filtrar por Categoría"
+        (ionChange)="filterByGenre($event)">
+        @for (item of movieGenres; track item.id) {
+        <ion-select-option value="{{ item.id }}">{{ item.name }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <!--
+   * Estado cargando para la página de películas, con un
+   * efecto de carga animado para cada tarjeta
+   * @see https://ionicframework.com/docs/api/skeleton-text
+   -->
+  <ion-grid>
+    <ion-row class="ion-justify-content-around">
+      @if (isLoading) {
+      @for (i of dummyArray; track i) {
+      <ion-col size="12" size-md="5" size-lg="3" size-xl="3">
+        <!-- Tarjeta de película, con un enlace a la página de detalles -->
+        <ion-card>
+          <!-- Imagen de la portada -->
+          <img alt="Skeleton-image" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+          <ion-card-header>
+            <!-- Título y año de estreno de la película -->
+            <ion-card-title> <ion-skeleton-text animated style="height: 40px" /> </ion-card-title>
+            <ion-card-subtitle> <ion-skeleton-text animated style="height: 40px" />
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <!-- Descripción breve de la película -->
+            <ion-skeleton-text animated style="height: 40px" />
+
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+      }
+      } @else if (error) {
+      <!-- Estado de error para la página de películas, con un
+        alerta -->
+      <ion-alert header="Error" [message]="error" isOpen="true" [buttons]="['Ok']" />
+      }
+    </ion-row>
+  </ion-grid>
+
+  <!--
+   * Grid con todas las películas, utilizando el sistema
+   * de cuadrícula responsivo de Ionic para adaptarse a
+   * diferentes tamaños de pantalla
+   * @see https://ionicframework.com/docs/layout/grid
+   -->
+
+  <ion-grid>
+    <ion-row class="ion-justify-content-around">
+      @if (!isLoading && !error) {
+      @for (item of movies; track item.id) {
+      <ion-col size="12" size-md="5" size-lg="3" size-xl="3">
+        <!-- Tarjeta de película -->
+        <ion-card>
+          <!-- Imagen de la portada -->
+          <img [src]="imageBaseUrl + '/w500' + item.poster_path" />
+          <ion-card-header>
+            <!-- Título y año de estreno de la película -->
+            <ion-card-title>{{ item.title }}</ion-card-title>
+            <ion-card-subtitle>{{ item.release_date | date:'y' }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <!-- Descripción breve de la película -->
+            {{ item.overview }}
+          </ion-card-content>
+
+        </ion-card>
+      </ion-col>
+      }
+      @empty {
+      @if (!isLoading) {
+      <!--
+           * Estado vacío para la página de películas, mostrado
+           * cuando no hay películas para mostrar
+           -->
+      <ion-item lines="none">
+        <ion-label>
+          <p class="ion-text-center">
+            No hay películas para mostrar
+          </p>
+        </ion-label>
+      </ion-item>
+      }
+      }
+      }
+    </ion-row>
+  </ion-grid>
+</ion-content>

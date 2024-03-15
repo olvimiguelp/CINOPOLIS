@@ -1,0 +1,7 @@
+{
+  "name": "CINOPOLIS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

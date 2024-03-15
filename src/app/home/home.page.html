@@ -1,0 +1,34 @@
+
+
+  <ion-content [fullscreen]="true">
+  <div id="container">
+    <div class="imagen-formulario">
+      <div class="formulario">
+        <h2>CREAR UNA NUEVA CUENTA</h2>
+        <form action="#">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" required>
+          <br>
+          <label for="correo">Correo electrónico:</label>
+          
+          <input type="email" id="correo" name="correo" required>
+          <br>
+          <label for="contrasena">Contraseña:</label>
+          <input type="password" id="contrasena" name="contrasena" required>
+          <br>
+          <label for="confirmar-contrasena">Confirmar contraseña:</label>
+          <input type="password" id="confirmar-contrasena" name="confirmar-contrasena" required>
+          <br>
+          <div class="terms-checkbox">
+            <input type="checkbox" id="aceptar-terminos" name="aceptar-terminos" required>
+            <label for="aceptar-terminos">Acepto los términos y condiciones</label>
+          </div>
+      
+          <ion-button class="black-button" (click)="redirectToLogin1()">Regristrarme</ion-button>
+          
+        </form>
+        <p>¿Ya estás registrado? <a href="#">Entra aquí</a></p>
+      </div>
+    </div>
+  </div>
+  </ion-content>

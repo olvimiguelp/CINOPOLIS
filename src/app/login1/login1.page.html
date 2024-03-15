@@ -1,0 +1,25 @@
+
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form>
+        <h3>Login Here</h3>
+
+        <label for="username">Crear Usuario</label>
+        <input type="text" placeholder="Usuario" id="username">
+
+        <label for="password">Crear Contraseña</label>
+        <input type="password" placeholder="Crear Contraseña" id="password">
+        <ion-button class="black-button" (click)="redirectToLogin1()">Iniciar</ion-button>
+
+        <p>¿Olvidaste tu contraseña? <a href="#">Recuperar</a></p>
+        <p>¿No tienes cuenta? <a href="#">Regístrate</a></p>
+        <div class="social">
+          <div class="go"><i class="fab fa-google"></i>  Google</div>
+          <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
+        </div>
+    </form>
+</body>
+
