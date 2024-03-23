@@ -1,16 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { InfiniteScrollCustomEvent, IonAlert, IonAvatar, IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonSkeletonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { InfiniteScrollCustomEvent, IonAlert, IonModal, IonAvatar, IonBadge, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonSkeletonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { catchError, delay, finalize } from 'rxjs';
 import { MovieService } from '../services/movie/movie.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.page.html',
   styleUrls: ['./movie.page.scss'],
   standalone: true,
-  imports: [IonButton, IonCol, IonRow, IonGrid, IonHeader,
+  imports: [IonButton, IonButtons, IonModal, IonCol, IonRow, IonGrid, IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
@@ -35,7 +36,7 @@ import { MovieService } from '../services/movie/movie.service';
     IonRow,
     IonSelectOption,
     IonSelect,
-    RouterModule,]
+    RouterModule]
 })
 export class MoviePage implements OnInit {
 
@@ -47,12 +48,15 @@ export class MoviePage implements OnInit {
   public isLoading = true;
   public error = null;
   public dummyArray = new Array(10);
+  public selectedMovie: any = null;
+  public currentTrailer: string = "";
+  isModalOpen = false;
 
 
   // for movies Genres
   public movieGenres: any[] = [];
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.loadMovies();
@@ -135,6 +139,41 @@ export class MoviePage implements OnInit {
       }
     })
 
+  }
+
+  async selectMovie(movie: any) {
+    this.selectedMovie = movie;
+    
+    // console.log(this.selectedMovie)
+
+    await this.movieService.getMovieTrailer(movie.id).pipe(
+      delay(500), // Un simple delay para simular
+      finalize(() => {
+        this.isLoading = false;
+      }),
+      catchError((err: any) => {
+        this.error = err.error.status_message;
+        return [];
+      })
+    ).subscribe({
+      next: (res) => {
+        console.log(res.results)
+        this.currentTrailer = `https://www.youtube.com/embed/${res.results[res.results.length - 1].key}`
+        console.log(this.currentTrailer)
+        setTimeout(() => {
+          this.isModalOpen = true
+        }, 100);
+      }
+    })
+    
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+  
+  getTrailer() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.currentTrailer)
   }
 
 }
