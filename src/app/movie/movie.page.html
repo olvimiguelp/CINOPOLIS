@@ -2,7 +2,7 @@
  * Encabezado para la página de películas, con un efecto
  * translúcido que se oculta cuando la página está contraída
  -->
-<ion-header [translucent]="true">
+ <ion-header [translucent]="true">
   <ion-toolbar>
     <!-- Título de la página -->
     <ion-title>Películas</ion-title>
@@ -83,7 +83,7 @@
       @for (item of movies; track item.id) {
       <ion-col size="12" size-md="5" size-lg="3" size-xl="3">
         <!-- Tarjeta de película -->
-        <ion-card>
+        <ion-card (click)="selectMovie(item)">
           <!-- Imagen de la portada -->
           <img [src]="imageBaseUrl + '/w500' + item.poster_path" />
           <ion-card-header>
@@ -118,4 +118,20 @@
       }
     </ion-row>
   </ion-grid>
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Trailer</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <iframe [src]="getTrailer()" frameborder="0" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

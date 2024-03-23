@@ -59,4 +59,11 @@ export class MovieService {
     )
   }
 
+    // filter movie by genre
+    getMovieTrailer(movieID: string): Observable<ApiResult> {
+      return this.http.get<ApiResult>(
+        `${BASE_URL}/movie/${movieID}/videos?api_key=${API_KEY}&&language=es`
+      )
+    }
+
 }
